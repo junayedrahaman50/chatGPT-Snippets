@@ -1,0 +1,84 @@
+Sure, here's an example of how to create a PHP CRUD (Create, Read, Update, Delete) application using MySQLi for database connectivity:
+
+First, let's create the database connection:
+
+php
+Copy code
+$servername = "localhost";
+$username = "username";
+$password = "password";
+$dbname = "database_name";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+Now let's create the code for each CRUD operation:
+
+Create operation:
+php
+Copy code
+// Get form data
+$name = $_POST['name'];
+$age = $_POST['age'];
+
+// Insert data into table
+$sql = "INSERT INTO my_table (name, age) VALUES ('$name', '$age')";
+
+if ($conn->query($sql) === TRUE) {
+  echo "New record created successfully";
+} else {
+  echo "Error: " . $sql . "<br>" . $conn->error;
+}
+Read operation:
+php
+Copy code
+// Select data from table
+$sql = "SELECT * FROM my_table";
+$result = $conn->query($sql);
+
+// Display data in HTML table
+if ($result->num_rows > 0) {
+  echo "<table>";
+  echo "<tr><th>Name</th><th>Age</th></tr>";
+  while($row = $result->fetch_assoc()) {
+    echo "<tr><td>" . $row['name'] . "</td><td>" . $row['age'] . "</td></tr>";
+  }
+  echo "</table>";
+} else {
+  echo "No results found";
+}
+Update operation:
+php
+Copy code
+// Get form data
+$id = $_POST['id'];
+$name = $_POST['name'];
+$age = $_POST['age'];
+
+// Update data in table
+$sql = "UPDATE my_table SET name='$name', age='$age' WHERE id=$id";
+
+if ($conn->query($sql) === TRUE) {
+  echo "Record updated successfully";
+} else {
+  echo "Error: " . $sql . "<br>" . $conn->error;
+}
+Delete operation:
+php
+Copy code
+// Get form data
+$id = $_POST['id'];
+
+// Delete data from table
+$sql = "DELETE FROM my_table WHERE id=$id";
+
+if ($conn->query($sql) === TRUE) {
+  echo "Record deleted successfully";
+} else {
+  echo "Error: " . $sql . "<br>" . $conn->error;
+}
+And that's it! With these code snippets, you can easily create a PHP CRUD application using MySQLi.

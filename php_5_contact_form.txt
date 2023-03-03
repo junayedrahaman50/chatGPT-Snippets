@@ -1,0 +1,59 @@
+Sure, here is an example of a simple contact form using PHP 5:
+
+HTML Form:
+
+php
+Copy code
+<form action="submit-form.php" method="POST">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" required>
+  
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required>
+  
+  <label for="message">Message:</label>
+  <textarea id="message" name="message" required></textarea>
+  
+  <input type="submit" value="Submit">
+</form>
+submit-form.php:
+
+php
+Copy code
+<?php
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+  $name = $_POST["name"];
+  $email = $_POST["email"];
+  $message = $_POST["message"];
+
+  // Connect to MySQL database
+  $servername = "localhost";
+  $username = "yourusername";
+  $password = "yourpassword";
+  $dbname = "yourdatabasename";
+  $conn = mysqli_connect($servername, $username, $password, $dbname);
+  
+  // Check connection
+  if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+  }
+  
+  // Prepare and bind SQL statement
+  $stmt = mysqli_prepare($conn, "INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)");
+  mysqli_stmt_bind_param($stmt, "sss", $name, $email, $message);
+  
+  // Execute SQL statement
+  mysqli_stmt_execute($stmt);
+  
+  // Close statement and connection
+  mysqli_stmt_close($stmt);
+  mysqli_close($conn);
+  
+  // Redirect to thank you page
+  header("Location: thank-you.html");
+  exit();
+}
+?>
+In this example, the form data is submitted to the "submit-form.php" script using the POST method. The PHP script then retrieves the form data, connects to a MySQL database, prepares and binds an SQL statement using placeholders, executes the SQL statement with the prepared values, and closes the statement and connection. Finally, the script redirects the user to a thank you page.
+
+Note that this is a basic example and may need to be modified to fit your specific needs, such as adding form validation or implementing email notifications
